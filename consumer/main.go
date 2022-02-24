@@ -11,7 +11,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.uber.org/zap"
 	"log"
 	"os"
 	"sync/atomic"
@@ -73,14 +72,13 @@ func main() {
 	},
 		hfkafka.WithWorkers(workers))
 	if err != nil {
-		log.Fatal("failure starting kafka consumer", zap.Error(err))
+		log.Fatal("failed to initialize kafka consumer")
 	}
 
 	go func() {
 		err = c.Start(ctx)
 		if err != nil {
-			log.Fatal("failure starting kafka consumer", zap.Error(err))
-			return
+			log.Fatal("failed to start kafka consumer")
 		}
 	}()
 
